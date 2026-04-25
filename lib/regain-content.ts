@@ -49,6 +49,20 @@ export interface MetricItem {
   note: string;
 }
 
+export interface ProgramCard {
+  step: string;
+  title: string;
+  subtitle: string;
+  description: string;
+}
+
+export interface FeatureItem {
+  number: string;
+  image: string;
+  title: string;
+  description: string;
+}
+
 // ===== METRICS (差し替え可能な定数) =====
 // NOTE: 実績数値は公開可能なデータに差し替えてください
 export const METRICS: MetricItem[] = [
@@ -174,6 +188,85 @@ export const SOLUTION_STEPS = [
       "LP・フォーム・発信設計・顧客管理など、必要なものを形にする",
     descriptionCorporate:
       "マニュアル・業務フロー・ツール・社内運用まで、現場に合わせて実装する",
+  },
+];
+
+// ===== ABOUT (REGAINとは) =====
+export const ABOUT_CONTENT = {
+  eyebrow: "ABOUT",
+  title: "REGAINとは",
+  headline: "AI・ITを、現場成果に変える\nコーチングサービスです。",
+  body: "REGAINは、AIツールの使い方を教えるだけの研修ではありません。個人の仕事や、組織の業務課題を整理し、AI/ITをどこに使えば成果につながるのかを明確にし、実務で使える型・仕組み・運用まで落とし込むコーチングです。",
+};
+
+// ===== PROGRAM (3ステップ - WorX風) =====
+export const PROGRAM_CONTENT = {
+  eyebrow: "PROGRAM",
+  title: "REGAINの3ステップ",
+};
+
+export const PROGRAM_CARDS: ProgramCard[] = [
+  {
+    step: "STEP 01",
+    title: "現状を見える化する",
+    subtitle: "Diagnosis",
+    description:
+      "仕事・営業・発信・業務・組織課題を整理し、何が成果を止めているのかを明確にします。",
+  },
+  {
+    step: "STEP 02",
+    title: "使える型に落とす",
+    subtitle: "Coaching",
+    description:
+      "AIを何に使うべきかを絞り、日々の仕事で使えるプロンプト・運用・チェックリストに落とします。",
+  },
+  {
+    step: "STEP 03",
+    title: "現場に実装する",
+    subtitle: "Implementation",
+    description:
+      "必要に応じて、LP・フォーム・CRM・業務ツール・社内運用まで実装し、成果が出る状態を作ります。",
+  },
+];
+
+// ===== SOLVE (REGAINなら、解決できます) =====
+export const SOLVE_CONTENT = {
+  title: "REGAINなら、解決できます。",
+  points: [
+    "AIを触るだけで終わっている",
+    "業務改善の優先順位が分からない",
+    "研修を受けても現場で続かない",
+    "専門性を売上や仕組みに変えられていない",
+  ],
+};
+
+// ===== FEATURES (REGAINの特徴) =====
+export const FEATURES_CONTENT = {
+  eyebrow: "FEATURES",
+  title: "REGAINの特徴",
+};
+
+export const FEATURE_ITEMS: FeatureItem[] = [
+  {
+    number: "01",
+    image: "/images/regain-feature-01.webp",
+    title: "業界特化だから、話が早い",
+    description:
+      "スポーツ・ヘルスケア・フィットネス領域の仕事・顧客対応・現場業務を前提に、AI/IT活用を設計します。",
+  },
+  {
+    number: "02",
+    image: "/images/regain-feature-02.webp",
+    title: "研修で終わらず、行動に落とす",
+    description:
+      "知識を得るだけではなく、明日から使うプロンプト、業務フロー、発信/営業の型まで落とし込みます。",
+  },
+  {
+    number: "03",
+    image: "/images/regain-feature-03.webp",
+    title: "必要なら、実装まで進める",
+    description:
+      "LP、予約フォーム、問い合わせ導線、CRM、社内マニュアルなど、成果に直結する仕組みづくりまで支援できます。",
   },
 ];
 

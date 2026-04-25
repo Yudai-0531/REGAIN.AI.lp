@@ -25,8 +25,13 @@ import {
   PAIN_TITLE,
   PAIN_CARDS,
   COST_ITEMS,
-  SOLUTION_STEPS,
   METRICS,
+  ABOUT_CONTENT,
+  PROGRAM_CONTENT,
+  PROGRAM_CARDS,
+  SOLVE_CONTENT,
+  FEATURES_CONTENT,
+  FEATURE_ITEMS,
   COMPARISON_ROWS,
   CASE_CARDS,
   OFFER_CONTENT,
@@ -204,7 +209,7 @@ export default function RegainLandingPage() {
               variant="secondary"
               onClick={() =>
                 document
-                  .getElementById("solution")
+                  .getElementById("about")
                   ?.scrollIntoView({ behavior: "smooth" })
               }
             />
@@ -301,43 +306,164 @@ export default function RegainLandingPage() {
         </div>
       </section>
 
-      {/* ===== SOLUTION ===== */}
-      <section id="solution" className="py-20 px-4 bg-base">
-        <div className="max-w-5xl mx-auto">
+      {/* ===== ABOUT ===== */}
+      <section id="about" className="py-20 px-4 bg-base">
+        <div className="max-w-4xl mx-auto text-center">
+          <SectionLabel>{ABOUT_CONTENT.eyebrow}</SectionLabel>
+          <h2 className="text-3xl sm:text-4xl font-black mb-6">
+            {ABOUT_CONTENT.title}
+          </h2>
+          <p className="text-2xl sm:text-3xl font-black leading-snug whitespace-pre-line mb-8">
+            {ABOUT_CONTENT.headline.split("\n").map((line, i) => (
+              <span key={i} className="block">
+                {line.includes("AI・IT") ? (
+                  <>
+                    <span className="text-primary">AI・IT</span>
+                    {line.replace("AI・IT", "")}
+                  </>
+                ) : (
+                  line
+                )}
+              </span>
+            ))}
+          </p>
+          <p className="text-text-sub text-base sm:text-lg leading-relaxed max-w-3xl mx-auto">
+            {ABOUT_CONTENT.body}
+          </p>
+        </div>
+      </section>
+
+      {/* ===== PROGRAM (3ステップ - WorX風 赤の斜め背景) ===== */}
+      <section id="program" className="relative py-24 px-4 overflow-hidden">
+        {/* 赤の斜め背景 */}
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-0 bg-primary"
+          style={{
+            clipPath: "polygon(0 6%, 100% 0, 100% 94%, 0 100%)",
+          }}
+        />
+        <div className="relative z-10 max-w-6xl mx-auto">
           <div className="text-center mb-14">
-            <SectionLabel>支援の流れ</SectionLabel>
-            <h2 className="text-3xl sm:text-4xl font-black">
-              REGAINの
-              <span className="text-primary">3ステップ</span>
+            <span className="inline-block text-xs font-semibold tracking-widest uppercase text-white/80 mb-3">
+              {PROGRAM_CONTENT.eyebrow}
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black text-white">
+              {PROGRAM_CONTENT.title}
             </h2>
-            <p className="text-text-sub mt-3 text-base">
-              {segment === "personal"
-                ? "あなたの仕事に合わせて、自走できる型を作る"
-                : "組織の業務課題を整理し、現場定着と実装まで進める"}
-            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {SOLUTION_STEPS.map((step, i) => (
-              <div key={i} className="relative">
-                <div className="bg-surface border border-white/10 rounded-2xl p-7 h-full">
-                  <div className="text-xs font-bold text-primary tracking-widest mb-2">
-                    {step.step}
-                  </div>
-                  <h3 className="text-xl font-black mb-3">{step.name}</h3>
-                  <p className="text-text-sub text-sm leading-relaxed">
-                    {segment === "personal"
-                      ? step.descriptionPersonal
-                      : step.descriptionCorporate}
-                  </p>
+            {PROGRAM_CARDS.map((card, i) => (
+              <div
+                key={i}
+                className="bg-white rounded-2xl p-7 shadow-xl flex flex-col h-full"
+              >
+                <div className="inline-block self-start text-xs font-bold tracking-widest text-white bg-light-text px-3 py-1.5 rounded mb-5">
+                  {card.step}
                 </div>
-                {i < 2 && (
-                  <div className="hidden md:flex absolute -right-3 top-1/2 -translate-y-1/2 z-10">
-                    <ArrowRight size={20} className="text-primary" />
-                  </div>
-                )}
+                <div className="text-xs font-semibold tracking-widest text-primary uppercase mb-2">
+                  {card.subtitle}
+                </div>
+                <h3 className="text-xl font-black text-light-text mb-3 leading-tight">
+                  {card.title}
+                </h3>
+                <p className="text-light-text/70 text-sm leading-relaxed">
+                  {card.description}
+                </p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== SOLVE (REGAINなら、解決できます) ===== */}
+      <section id="solve" className="py-20 px-4 bg-light-bg">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-black text-light-text">
+              <span className="text-primary">REGAIN</span>
+              なら、解決できます。
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {SOLVE_CONTENT.points.map((point, i) => (
+              <div
+                key={i}
+                className="flex items-start gap-4 bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow"
+              >
+                <div className="flex-shrink-0 w-9 h-9 rounded-full bg-primary flex items-center justify-center mt-0.5">
+                  <Check size={16} className="text-white" strokeWidth={3} />
+                </div>
+                <p className="text-light-text font-medium leading-relaxed">
+                  {point}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== FEATURES (01/02/03 交互配置) ===== */}
+      <section id="features" className="py-20 px-4 bg-base">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-14">
+            <SectionLabel>{FEATURES_CONTENT.eyebrow}</SectionLabel>
+            <h2 className="text-3xl sm:text-4xl font-black">
+              {FEATURES_CONTENT.title}
+            </h2>
+          </div>
+
+          <div className="space-y-12 sm:space-y-16">
+            {FEATURE_ITEMS.map((item, i) => {
+              const isReverse = i % 2 === 1;
+              return (
+                <div
+                  key={i}
+                  className={`flex flex-col ${
+                    isReverse ? "md:flex-row-reverse" : "md:flex-row"
+                  } items-center gap-8 md:gap-12`}
+                >
+                  {/* 画像 (フォールバック付き) */}
+                  <div className="w-full md:w-1/2 flex-shrink-0">
+                    <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-br from-primary/30 to-primary-dark/40 border border-white/10">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).style.display =
+                            "none";
+                        }}
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <span className="text-[6rem] sm:text-[8rem] font-black text-white/15 leading-none">
+                          {item.number}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* テキスト */}
+                  <div className="w-full md:w-1/2">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-white font-black text-lg">
+                        {item.number}
+                      </div>
+                      <div className="h-px flex-1 bg-white/20" />
+                    </div>
+                    <h3 className="text-2xl sm:text-3xl font-black mb-4 leading-tight">
+                      {item.title}
+                    </h3>
+                    <p className="text-text-sub text-base leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -346,7 +472,7 @@ export default function RegainLandingPage() {
       <section id="comparison" className="py-20 px-4 bg-light-bg">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <SectionLabel>REGAINとは</SectionLabel>
+            <SectionLabel>違い</SectionLabel>
             <h2 className="text-3xl sm:text-4xl font-black text-light-text">
               一般的なAI研修と、
               <span className="text-primary">何が違うのか</span>
