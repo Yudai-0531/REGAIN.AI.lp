@@ -2,16 +2,6 @@
 
 import { useState, useRef } from "react";
 import {
-  Brain,
-  Clock,
-  TrendingDown,
-  Smartphone,
-  BookOpen,
-  Building2,
-  Users,
-  Layers,
-  AlertCircle,
-  FileQuestion,
   Check,
   ArrowRight,
   ChevronRight,
@@ -22,11 +12,14 @@ import {
 import {
   Segment,
   HERO_CONTENT,
-  PAIN_TITLE,
-  PAIN_CARDS,
+  HERO_IMAGE_PATH,
+  LOGO_STRIP_CHIPS,
+  CAMPAIGN_CONTENT,
+  PAIN_CHECKLIST_TITLE,
+  PAIN_CHECKLIST,
+  BRIDGE_CONTENT,
   COST_ITEMS,
   SOLUTION_STEPS,
-  METRICS,
   COMPARISON_ROWS,
   CASE_CARDS,
   OFFER_CONTENT,
@@ -43,19 +36,6 @@ import {
 import SegmentToggle from "./SegmentToggle";
 import CTAButton from "./CTAButton";
 import FAQAccordion from "./FAQAccordion";
-
-const ICON_MAP: Record<string, React.ElementType> = {
-  Brain,
-  Clock,
-  TrendingDown,
-  Smartphone,
-  BookOpen,
-  Building2,
-  Users,
-  Layers,
-  AlertCircle,
-  FileQuestion,
-};
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -165,103 +145,241 @@ export default function RegainLandingPage() {
         </div>
       </header>
 
-      {/* ===== HERO ===== */}
+      {/* ===== HERO (WorX風) ===== */}
       <section
         id="hero"
-        className="min-h-screen flex flex-col justify-center bg-base pt-24 pb-20 px-4"
+        className="relative min-h-screen flex flex-col justify-center bg-light-bg pt-24 pb-16 px-4 overflow-hidden"
       >
-        <div className="max-w-4xl mx-auto w-full">
-          <div className="flex justify-center mb-10">
+        {/* PCのみ：右側に赤い斜め図形 */}
+        <div
+          aria-hidden
+          className="hidden md:block absolute top-0 right-0 w-[58%] h-full hero-diagonal-shape z-0"
+        />
+        {/* 左側装飾の薄いグリッド */}
+        <div
+          aria-hidden
+          className="hidden md:block absolute top-0 left-0 w-1/2 h-full pointer-events-none"
+          style={{
+            backgroundImage:
+              "radial-gradient(rgba(17,24,39,0.06) 1px, transparent 1px)",
+            backgroundSize: "20px 20px",
+          }}
+        />
+
+        <div className="relative z-10 max-w-6xl mx-auto w-full">
+          <div className="mb-8 flex justify-start">
             <SegmentToggle segment={segment} onChange={setSegment} />
           </div>
 
-          <div className="mb-3 text-center">
-            <SectionLabel>{hero.eyebrow}</SectionLabel>
-          </div>
-
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-center leading-tight mb-6 text-text-main">
-            {hero.headline}
-          </h1>
-
-          <p className="text-text-sub text-lg sm:text-xl text-center max-w-2xl mx-auto leading-relaxed mb-4">
-            {hero.subheadline}
-          </p>
-
-          <p className="text-center text-sm text-primary font-medium mb-10">
-            AI研修ではなく、成果につながるAI/ITコーチング
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <CTAButton
-              label={hero.primaryCta}
-              ctaId={`hero-${segment}-primary`}
-              variant="primary"
-              onClick={scrollToForm}
-            />
-            <CTAButton
-              label={hero.secondaryCta}
-              ctaId={`hero-${segment}-secondary`}
-              variant="secondary"
-              onClick={() =>
-                document
-                  .getElementById("solution")
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }
-            />
-          </div>
-
-          <div className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {METRICS.map((m) => (
-              <div
-                key={m.label}
-                className="bg-surface border border-white/10 rounded-xl p-4 text-center"
-              >
-                <div className="text-2xl font-black text-primary mb-1">
-                  {m.value === "要差し替え" ? (
-                    <span className="text-base text-text-sub">公開準備中</span>
-                  ) : (
-                    m.value
-                  )}
-                </div>
-                <div className="text-xs text-text-sub font-medium">
-                  {m.label}
-                </div>
-                <div className="text-xs text-text-sub/60 mt-0.5">{m.note}</div>
+          <div className="grid md:grid-cols-2 gap-10 lg:gap-14 items-center">
+            {/* 左：強いコピー */}
+            <div>
+              <div className="mb-5">
+                <span className="inline-block text-xs font-bold tracking-[0.25em] uppercase text-primary border-l-4 border-primary pl-3 py-0.5">
+                  {hero.eyebrow}
+                </span>
               </div>
-            ))}
+
+              <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black leading-[1.15] tracking-tight mb-6 text-light-text whitespace-pre-line">
+                {hero.headline}
+              </h1>
+
+              <p className="text-light-text/75 text-base sm:text-lg leading-relaxed mb-6 max-w-lg">
+                {hero.subheadline}
+              </p>
+
+              <p className="inline-block text-sm font-semibold text-primary bg-primary/10 px-3 py-1.5 rounded-full mb-8">
+                AI研修ではなく、成果につながるAI/ITコーチング
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                  onClick={() => {
+                    trackCtaClick(`hero-${segment}-primary`);
+                    scrollToForm();
+                  }}
+                  data-cta={`hero-${segment}-primary`}
+                  className="inline-flex items-center justify-center gap-2 px-7 py-4 bg-light-text hover:bg-black text-white font-bold rounded-full text-base transition-all duration-200 shadow-xl active:scale-95"
+                >
+                  {hero.primaryCta}
+                  <ChevronRight size={18} />
+                </button>
+                <button
+                  onClick={() => {
+                    trackCtaClick(`hero-${segment}-secondary`);
+                    document
+                      .getElementById("solution")
+                      ?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  data-cta={`hero-${segment}-secondary`}
+                  className="inline-flex items-center justify-center px-7 py-4 border-2 border-light-text/30 hover:border-light-text text-light-text font-semibold rounded-full text-base transition-all duration-200 active:scale-95 bg-white/60"
+                >
+                  {hero.secondaryCta}
+                </button>
+              </div>
+            </div>
+
+            {/* 右：画像（無ければ赤グラデのフォールバック） */}
+            <div className="relative">
+              <div className="relative w-full max-w-md mx-auto md:max-w-none aspect-[4/5] rounded-[28px] overflow-hidden shadow-2xl bg-gradient-to-br from-primary via-primary-dark to-[#5a0714]">
+                {/* 画像。ファイルが無ければ自動でhide → グラデが見える */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={HERO_IMAGE_PATH}
+                  alt="REGAIN｜AI/ITで成果を取り戻すコーチング"
+                  loading="eager"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).style.display =
+                      "none";
+                  }}
+                />
+                {/* フォールバック装飾 */}
+                <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-50 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.35),transparent_55%)]" />
+                <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6 text-white">
+                  <div className="text-[10px] font-bold tracking-[0.35em] uppercase opacity-90 mb-1">
+                    REGAIN
+                  </div>
+                  <div className="text-xl sm:text-2xl font-black leading-tight">
+                    AI × IT × COACHING
+                  </div>
+                  <div className="text-xs opacity-80 mt-1">
+                    Sports / Healthcare / Fitness
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ===== PAIN ===== */}
-      <section id="pain" className="py-20 px-4 bg-light-bg">
+      {/* ===== ロゴ帯（業種チップ） ===== */}
+      <section
+        id="logo-strip"
+        className="bg-white border-y border-gray-100 py-7 px-4"
+      >
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+            <p className="text-xs font-bold tracking-[0.2em] uppercase text-light-text/60 sm:w-44 flex-shrink-0">
+              FOR / 対象領域
+            </p>
+            <div className="flex flex-wrap gap-2 sm:gap-3">
+              {LOGO_STRIP_CHIPS.map((chip) => (
+                <span
+                  key={chip}
+                  className="inline-flex items-center px-4 py-1.5 rounded-full bg-gray-100 text-light-text text-sm font-semibold border border-gray-200"
+                >
+                  {chip}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== キャンペーン（無料診断カード） ===== */}
+      <section id="campaign" className="bg-light-bg py-14 px-4">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="relative bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+            {/* 左の赤い斜めアクセント */}
+            <div
+              aria-hidden
+              className="absolute top-0 left-0 h-full w-2 bg-primary"
+            />
+            <div className="grid md:grid-cols-3 gap-6 p-7 sm:p-9 items-center">
+              <div className="md:col-span-2">
+                <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-2">
+                  CAMPAIGN
+                </span>
+                <h3 className="text-2xl sm:text-3xl font-black text-light-text leading-tight mb-3">
+                  {CAMPAIGN_CONTENT.title}
+                </h3>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-primary text-4xl sm:text-5xl font-black tracking-tight">
+                    {CAMPAIGN_CONTENT.highlight}
+                  </span>
+                </div>
+                <p className="text-light-text/70 text-sm mt-3">
+                  {CAMPAIGN_CONTENT.note}
+                </p>
+              </div>
+              <div className="md:col-span-1 flex md:justify-end">
+                <button
+                  onClick={() => {
+                    trackCtaClick(`campaign-${segment}-cta`);
+                    scrollToForm();
+                  }}
+                  data-cta={`campaign-${segment}-cta`}
+                  className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 bg-light-text hover:bg-black text-white font-bold rounded-full text-base transition-all duration-200 shadow-lg active:scale-95"
+                >
+                  {CAMPAIGN_CONTENT.cta}
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== PAIN（チェックリスト：薄グレー＋中央白カード） ===== */}
+      <section id="pain" className="py-20 px-4 bg-light-bg">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-10">
             <SectionLabel>現状の課題</SectionLabel>
-            <h2 className="text-3xl sm:text-4xl font-black text-light-text">
-              {PAIN_TITLE[segment]}
+            <h2 className="text-3xl sm:text-4xl font-black text-light-text leading-tight">
+              {PAIN_CHECKLIST_TITLE[segment]}
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {PAIN_CARDS[segment].map((card, i) => {
-              const IconComponent = ICON_MAP[card.icon];
-              return (
-                <div
+          <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-7 sm:p-10">
+            <ul className="space-y-4">
+              {PAIN_CHECKLIST[segment].map((text, i) => (
+                <li
                   key={i}
-                  className="flex items-start gap-4 bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow"
+                  className="flex items-start gap-4 pb-4 border-b border-gray-100 last:border-b-0 last:pb-0"
                 >
-                  <div className="flex-shrink-0 w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                    {IconComponent && (
-                      <IconComponent size={20} className="text-primary" />
-                    )}
+                  <div className="flex-shrink-0 w-7 h-7 rounded-md border-2 border-primary flex items-center justify-center mt-0.5">
+                    <Check
+                      size={16}
+                      className="text-primary"
+                      strokeWidth={3}
+                    />
                   </div>
-                  <p className="text-light-text text-sm leading-relaxed">
-                    {card.text}
+                  <p className="text-light-text text-base sm:text-lg font-medium leading-relaxed">
+                    {text}
                   </p>
-                </div>
-              );
-            })}
+                </li>
+              ))}
+            </ul>
+
+            <p className="text-center text-sm text-light-text/60 mt-7">
+              ひとつでも当てはまる方は、まずは無料診断から。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== BRIDGE（黒い帯：AIを学ぶだけでは成果は変わらない） ===== */}
+      <section
+        id="bridge"
+        className="relative bg-light-text text-white py-20 sm:py-24 px-4 bridge-clip"
+      >
+        {/* 赤い細い斜めアクセント */}
+        <div
+          aria-hidden
+          className="absolute top-0 left-0 w-full h-1 bg-primary"
+        />
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-xs sm:text-sm font-bold tracking-[0.35em] text-primary mb-5">
+            {BRIDGE_CONTENT.small}
+          </p>
+          <h2 className="text-3xl sm:text-5xl font-black leading-tight">
+            {BRIDGE_CONTENT.main}
+          </h2>
+          <div className="mt-6 inline-flex items-center gap-2 text-text-sub text-sm">
+            <ArrowRight size={16} className="text-primary" />
+            REGAINは、現場で使える状態まで伴走します
           </div>
         </div>
       </section>

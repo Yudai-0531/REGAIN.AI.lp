@@ -21,4 +21,27 @@ body {
 @layer utilities {
   .bg-base { background-color: #0B0F14; }
   .bg-surface { background-color: #121821; }
+
+  /* Heroの赤い斜め図形（PC: clip-pathで斜め切り抜き）*/
+  .hero-diagonal-shape {
+    background: linear-gradient(135deg, #C8102E 0%, #8F0B20 100%);
+    clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 100%);
+  }
+  /* スマホ向け：クリップを単純な縦帯にして崩れ防止 */
+  @media (max-width: 768px) {
+    .hero-diagonal-shape {
+      clip-path: none;
+      border-radius: 24px;
+    }
+  }
+
+  /* ブリッジセクションの斜め下端 */
+  .bridge-clip {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 48px));
+  }
+  @media (max-width: 768px) {
+    .bridge-clip {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 24px));
+    }
+  }
 }

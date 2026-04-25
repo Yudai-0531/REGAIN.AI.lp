@@ -63,10 +63,11 @@ export const METRICS: MetricItem[] = [
 ];
 
 // ===== HERO =====
+// 改行は \n で表現し、表示側で配列に分割してレンダリングする想定
 export const HERO_CONTENT: Record<Segment, HeroContent> = {
   personal: {
     eyebrow: "個人向け｜AI・IT活用コーチング",
-    headline: "専門性はある。次は、成果に変える型を取り戻そう。",
+    headline: "専門性はある。\nでも、成果への変え方が\nまだ見つからない。",
     subheadline:
       "REGAINは、スポーツ・ヘルスケア領域で働く個人のためのAI/IT活用コーチングです。発信・営業・資料作成・顧客対応を、あなたの仕事に合わせて実装できる状態まで伴走します。",
     primaryCta: "45分無料 現状整理セッションを受ける",
@@ -74,12 +75,61 @@ export const HERO_CONTENT: Record<Segment, HeroContent> = {
   },
   corporate: {
     eyebrow: "法人向け｜AI・IT組織コーチング",
-    headline: "AI導入を、現場が動く組織変革に変える。",
+    headline: "AI導入を、\n現場が動く組織変革へ。",
     subheadline:
       "REGAINは、スポーツ・ヘルスケア関連組織のためのAI/IT組織コーチングです。研修で終わらせず、業務整理・現場定着・実装ロードマップまで伴走します。",
     primaryCta: "30分無料 組織課題診断を受ける",
     secondaryCta: "支援内容を見る",
   },
+};
+
+// Hero画像パス（無い場合は赤系グラデのフォールバックを表示）
+export const HERO_IMAGE_PATH = "/images/regain-hero.webp";
+
+// ===== ロゴ帯（業種チップ） =====
+export const LOGO_STRIP_CHIPS: string[] = [
+  "Trainer",
+  "Clinic",
+  "Gym",
+  "Sports Team",
+  "Healthcare",
+  "Fitness",
+  "School",
+];
+
+// ===== キャンペーン（無料診断カード） =====
+export const CAMPAIGN_CONTENT = {
+  title: "まずは無料で、改善ポイントを可視化",
+  highlight: "初回診断 0円",
+  cta: "無料診断を申し込む",
+  note: "オンライン対応・強引な営業なし",
+};
+
+// ===== 悩みチェックリスト（白カード用） =====
+export const PAIN_CHECKLIST_TITLE: Record<Segment, string> = {
+  personal: "こんな状態で、止まっていませんか？",
+  corporate: "こんな状態で、止まっていませんか？",
+};
+
+export const PAIN_CHECKLIST: Record<Segment, string[]> = {
+  personal: [
+    "ChatGPTを触っているが、仕事の成果に変えられていない",
+    "発信や営業が自己流で、問い合わせにつながらない",
+    "資料作成・顧客対応・予約管理に時間を取られている",
+    "専門性はあるのに、単価や売上に変換できていない",
+  ],
+  corporate: [
+    "AI導入の必要性は感じているが、現場で何に使うか決まっていない",
+    "スタッフごとにITリテラシーがバラバラ",
+    "問い合わせ・予約・顧客対応・資料作成が属人化している",
+    "研修を受けても、現場の業務が変わらない",
+  ],
+};
+
+// ===== ブリッジ（黒帯） =====
+export const BRIDGE_CONTENT = {
+  small: "AI TOOLS ARE NOT THE GOAL.",
+  main: "AIを学ぶだけでは、成果は変わらない。",
 };
 
 // ===== PAIN =====
