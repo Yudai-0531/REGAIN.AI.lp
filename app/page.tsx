@@ -1,4 +1,4 @@
-import RegainLandingPage from "@/components/RegainLandingPage";
+import RegainLandingPage from "@/components/regain/RegainLandingPage";
 
 export default function Home() {
   return <RegainLandingPage />;

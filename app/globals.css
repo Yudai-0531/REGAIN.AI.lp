@@ -3,8 +3,21 @@
 @tailwind utilities;
 
 :root {
-  --color-base: #0B0F14;
-  --color-surface: #121821;
+  --color-bg: #FFFFFF;
+  --color-surface: #F8F8F8;
+  --color-surface-2: #EEF0F2;
+  --color-ink: #111827;
+  --color-ink-sub: #4B5563;
+  --color-primary: #D71920;
+  --color-primary-dark: #9F1118;
+  --color-primary-pale: #FFE8EA;
+  --color-cta: #111111;
+  --color-cta-hover: #000000;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 html {
@@ -12,13 +25,85 @@ html {
 }
 
 body {
-  background-color: var(--color-base);
-  color: #F8FAFC;
+  background-color: var(--color-bg);
+  color: var(--color-ink);
   font-family: var(--font-noto), var(--font-inter), system-ui, sans-serif;
+  font-feature-settings: "palt";
 }
 
-/* Prevent layout shift for toggle */
+/* ================================
+ * REGAIN LP utilities
+ * ================================ */
 @layer utilities {
-  .bg-base { background-color: #0B0F14; }
-  .bg-surface { background-color: #121821; }
+  /* === 斜め赤背景 (WorX型) ===
+   * 親要素に relative + overflow-hidden をつけて使用 */
+  .diagonal-red {
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-primary);
+    transform: skewY(-6deg);
+    transform-origin: top left;
+    z-index: 0;
+  }
+
+  .diagonal-red-deep {
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-primary-dark);
+    transform: skewY(-6deg);
+    transform-origin: top left;
+    z-index: 0;
+  }
+
+  .diagonal-gray {
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-surface);
+    transform: skewY(-4deg);
+    transform-origin: top left;
+    z-index: 0;
+  }
+
+  /* === 英語小見出し === */
+  .eyebrow-en {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+  }
+
+  /* === 縦書き気味の太い見出し === */
+  .headline-jp {
+    font-weight: 900;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+  }
+
+  /* === コンテナ === */
+  .container-lp {
+    max-width: 1120px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  /* === セクション余白 === */
+  .section-y {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+  @media (min-width: 768px) {
+    .section-y {
+      padding-top: 7rem;
+      padding-bottom: 7rem;
+    }
+  }
+}
+
+/* セレクション色 */
+::selection {
+  background-color: var(--color-primary);
+  color: #FFFFFF;
 }

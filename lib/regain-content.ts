@@ -63,23 +63,30 @@ export const METRICS: MetricItem[] = [
 ];
 
 // ===== HERO =====
+// NOTE: headline は \n で改行を許容し、レンダリング側で whitespace-pre-line を使う
 export const HERO_CONTENT: Record<Segment, HeroContent> = {
   personal: {
-    eyebrow: "個人向け｜AI・IT活用コーチング",
-    headline: "専門性はある。次は、成果に変える型を取り戻そう。",
+    eyebrow: "FOR PROFESSIONALS",
+    headline: "専門性はある。\nでも、成果への変え方が\nまだ見つからない。",
     subheadline:
       "REGAINは、スポーツ・ヘルスケア領域で働く個人のためのAI/IT活用コーチングです。発信・営業・資料作成・顧客対応を、あなたの仕事に合わせて実装できる状態まで伴走します。",
-    primaryCta: "45分無料 現状整理セッションを受ける",
+    primaryCta: "45分無料 現状整理を受ける",
     secondaryCta: "支援内容を見る",
   },
   corporate: {
-    eyebrow: "法人向け｜AI・IT組織コーチング",
-    headline: "AI導入を、現場が動く組織変革に変える。",
+    eyebrow: "FOR ORGANIZATIONS",
+    headline: "AI導入を、\n現場が動く組織変革へ。",
     subheadline:
       "REGAINは、スポーツ・ヘルスケア関連組織のためのAI/IT組織コーチングです。研修で終わらせず、業務整理・現場定着・実装ロードマップまで伴走します。",
     primaryCta: "30分無料 組織課題診断を受ける",
     secondaryCta: "支援内容を見る",
   },
+};
+
+// ===== セグメントラベル =====
+export const SEGMENT_LABELS: Record<Segment, string> = {
+  personal: "個人向け",
+  corporate: "法人向け",
 };
 
 // ===== PAIN =====
