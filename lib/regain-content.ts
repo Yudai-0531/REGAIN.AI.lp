@@ -43,6 +43,20 @@ export interface FormField {
   required: boolean;
 }
 
+export interface VoiceCard {
+  label: string;
+  title: string;
+  body: string;
+  image: string;
+}
+
+export interface ComparisonRow3 {
+  topic: string;
+  general: string;
+  agency: string;
+  regain: string;
+}
+
 export interface MetricItem {
   label: string;
   value: string;
@@ -355,6 +369,150 @@ export const FORM_FIELDS_CORPORATE: FormField[] = [
     required: true,
   },
 ];
+
+// ===== 中間CTA =====
+export const MID_CTA_CONTENT = {
+  bgImage: "/images/regain-cta-bg.webp",
+  title: "まずは無料診断で、今の詰まりを整理しませんか？",
+  personalCta: "45分無料 現状整理を受ける",
+  corporateCta: "30分無料 組織課題診断を受ける",
+};
+
+// ===== VOICES（想定される変化） =====
+export const VOICE_CARDS: VoiceCard[] = [
+  {
+    label: "個人｜トレーナー",
+    title: "発信と営業の導線がつながり、相談につながる形が見えた。",
+    body: "SNS投稿、プロフィール、無料相談導線を整理し、自分の専門性をどう見せるべきかが明確になる。",
+    image: "/images/regain-voice-01.webp",
+  },
+  {
+    label: "法人｜ジム運営",
+    title: "スタッフごとの対応品質を、仕組みで揃えられる。",
+    body: "接客、入会案内、継続提案のテンプレートを整え、現場で使える運用に落とし込む。",
+    image: "/images/regain-voice-02.webp",
+  },
+  {
+    label: "法人｜治療院/クリニック",
+    title: "問い合わせ・説明・フォローの属人化を見直せる。",
+    body: "患者/顧客対応の流れを整理し、AIとフォームを活用した改善ポイントを可視化する。",
+    image: "/images/regain-voice-03.webp",
+  },
+];
+
+// ===== OFFER（WorX風 料金カード） =====
+export const OFFER_CARD = {
+  eyebrow: "OFFER",
+  title: "無料診断",
+  headline: "初回診断 0円",
+  personalTitle: "45分無料 現状整理セッション",
+  corporateTitle: "30分無料 組織課題診断",
+  cta: "無料診断を申し込む",
+  bullets: [
+    "現状の業務・営業・発信・組織課題を整理",
+    "AI/ITで改善できるポイントと優先順位を提示",
+    "強引な営業なし／オンライン実施可能",
+  ],
+};
+
+// ===== 3列比較表 =====
+export const COMPARISON_COLUMNS = [
+  "一般的なAI研修",
+  "制作/システム会社",
+  "REGAIN",
+];
+
+export const COMPARISON_ROWS_3: ComparisonRow3[] = [
+  {
+    topic: "目的",
+    general: "AIツールの使い方を学ぶ",
+    agency: "発注内容を制作・実装する",
+    regain: "仕事・組織の成果に変える",
+  },
+  {
+    topic: "業界知識",
+    general: "業種を問わない汎用",
+    agency: "業界不問の受託対応",
+    regain: "スポーツ・ヘルスケア特化",
+  },
+  {
+    topic: "支援範囲",
+    general: "講義・ワーク中心",
+    agency: "依頼された制作物のみ",
+    regain: "診断〜コーチング〜実装まで",
+  },
+  {
+    topic: "現場定着",
+    general: "受講後はフォローなし",
+    agency: "納品で終了",
+    regain: "現場で使われる状態まで伴走",
+  },
+  {
+    topic: "ゴール",
+    general: "知識を得る",
+    agency: "成果物が完成する",
+    regain: "現場で使える仕組みを作る",
+  },
+];
+
+// ===== FAQ（CV直前の標準4問） =====
+export const FAQS_CV: FaqItem[] = [
+  {
+    q: "AIに詳しくなくても大丈夫ですか？",
+    a: "大丈夫です。REGAINはAIツールの知識量ではなく、あなたの仕事や組織課題に合わせて、何から使うべきかを一緒に整理するコーチングです。",
+  },
+  {
+    q: "無料診断では何をしますか？",
+    a: "現状の業務・営業・発信・組織課題を伺い、AI/ITで改善できるポイントと優先順位を整理します。",
+  },
+  {
+    q: "強引な営業はありますか？",
+    a: "ありません。無料診断では、まず現状整理と改善ポイントの提示を行います。必要な場合のみ、支援プランをご案内します。",
+  },
+  {
+    q: "法人研修だけの依頼も可能ですか？",
+    a: "可能です。ただしREGAINでは、研修で終わらせず、現場で使われる状態までの伴走や実装も推奨しています。",
+  },
+];
+
+// ===== 最終CTA =====
+export const FINAL_CTA_CONTENT = {
+  bgImage: "/images/regain-cta-bg.webp",
+  title: "AIを、成果に変える最初の一歩を。",
+  personalText: "まずは45分で、あなたの仕事の詰まりを整理しましょう。",
+  corporateText: "まずは30分で、組織の改善余地を見える化しましょう。",
+};
+
+// ===== 統合コンタクトフォーム（CV最終ポイント） =====
+export const CONTACT_FORM_FIELDS: FormField[] = [
+  { label: "お名前", type: "text", placeholder: "山田 太郎", required: true },
+  {
+    label: "メールアドレス",
+    type: "email",
+    placeholder: "example@email.com",
+    required: true,
+  },
+  {
+    label: "電話番号（任意）",
+    type: "tel",
+    placeholder: "090-0000-0000",
+    required: false,
+  },
+  {
+    label: "個人 / 法人",
+    type: "select",
+    options: ["個人", "法人"],
+    required: true,
+  },
+  {
+    label: "相談内容",
+    type: "textarea",
+    placeholder: "現状の課題や、相談したい内容をご記入ください",
+    required: true,
+  },
+];
+
+export const CONTACT_FORM_SUBMIT = "無料診断を申し込む";
 
 // CTA クリックイベントハンドラ（GA4・Meta Pixel差し替え用）
 export function trackCtaClick(ctaId: string): void {

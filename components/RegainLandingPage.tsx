@@ -13,6 +13,7 @@ import {
   AlertCircle,
   FileQuestion,
   Check,
+  X,
   ArrowRight,
   ChevronRight,
   Shield,
@@ -27,16 +28,15 @@ import {
   COST_ITEMS,
   SOLUTION_STEPS,
   METRICS,
-  COMPARISON_ROWS,
-  CASE_CARDS,
-  OFFER_CONTENT,
-  FAQS_COMMON,
-  FAQS_PERSONAL,
-  FAQS_CORPORATE,
-  FINAL_CTA_COPY,
-  FORM_FIELDS_COMMON,
-  FORM_FIELDS_PERSONAL,
-  FORM_FIELDS_CORPORATE,
+  MID_CTA_CONTENT,
+  VOICE_CARDS,
+  OFFER_CARD,
+  COMPARISON_COLUMNS,
+  COMPARISON_ROWS_3,
+  FAQS_CV,
+  FINAL_CTA_CONTENT,
+  CONTACT_FORM_FIELDS,
+  CONTACT_FORM_SUBMIT,
   FormField,
   trackCtaClick,
 } from "@/lib/regain-content";
@@ -57,26 +57,41 @@ const ICON_MAP: Record<string, React.ElementType> = {
   FileQuestion,
 };
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+function SectionLabel({
+  children,
+  tone = "dark",
+}: {
+  children: React.ReactNode;
+  tone?: "dark" | "light" | "white";
+}) {
+  const color =
+    tone === "white"
+      ? "text-white/80"
+      : tone === "light"
+      ? "text-primary"
+      : "text-primary";
   return (
-    <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary mb-3">
+    <span
+      className={`inline-block text-xs font-semibold tracking-[0.25em] uppercase mb-3 ${color}`}
+    >
       {children}
     </span>
   );
 }
 
 function FormInput({ field }: { field: FormField }) {
+  const baseInput =
+    "w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-light-text placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-colors";
+  const baseLabel = "block text-sm font-semibold text-light-text mb-1.5";
+
   if (field.type === "select") {
     return (
       <div>
-        <label className="block text-sm font-medium text-text-sub mb-1.5">
+        <label className={baseLabel}>
           {field.label}
           {field.required && <span className="text-primary ml-1">*</span>}
         </label>
-        <select
-          required={field.required}
-          className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-xl text-text-main focus:outline-none focus:border-primary transition-colors"
-        >
+        <select required={field.required} className={baseInput}>
           <option value="">選択してください</option>
           {field.options?.map((opt) => (
             <option key={opt} value={opt}>
@@ -90,22 +105,22 @@ function FormInput({ field }: { field: FormField }) {
   if (field.type === "textarea") {
     return (
       <div>
-        <label className="block text-sm font-medium text-text-sub mb-1.5">
+        <label className={baseLabel}>
           {field.label}
           {field.required && <span className="text-primary ml-1">*</span>}
         </label>
         <textarea
           required={field.required}
           placeholder={field.placeholder}
-          rows={4}
-          className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-xl text-text-main placeholder-text-sub/50 focus:outline-none focus:border-primary transition-colors resize-none"
+          rows={5}
+          className={`${baseInput} resize-none`}
         />
       </div>
     );
   }
   return (
     <div>
-      <label className="block text-sm font-medium text-text-sub mb-1.5">
+      <label className={baseLabel}>
         {field.label}
         {field.required && <span className="text-primary ml-1">*</span>}
       </label>
@@ -113,7 +128,7 @@ function FormInput({ field }: { field: FormField }) {
         type={field.type}
         required={field.required}
         placeholder={field.placeholder}
-        className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-xl text-text-main placeholder-text-sub/50 focus:outline-none focus:border-primary transition-colors"
+        className={baseInput}
       />
     </div>
   );
@@ -121,20 +136,18 @@ function FormInput({ field }: { field: FormField }) {
 
 export default function RegainLandingPage() {
   const [segment, setSegment] = useState<Segment>("personal");
-  const formRef = useRef<HTMLDivElement>(null);
+  const contactRef = useRef<HTMLDivElement>(null);
 
   const hero = HERO_CONTENT[segment];
-  const offerFormFields = [
-    ...FORM_FIELDS_COMMON,
-    ...(segment === "personal" ? FORM_FIELDS_PERSONAL : FORM_FIELDS_CORPORATE),
-  ];
-  const faqs = [
-    ...FAQS_COMMON,
-    ...(segment === "personal" ? FAQS_PERSONAL : FAQS_CORPORATE),
-  ];
+  const offerTitle =
+    segment === "personal" ? OFFER_CARD.personalTitle : OFFER_CARD.corporateTitle;
+  const finalCtaText =
+    segment === "personal"
+      ? FINAL_CTA_CONTENT.personalText
+      : FINAL_CTA_CONTENT.corporateText;
 
-  const scrollToForm = () => {
-    formRef.current?.scrollIntoView({ behavior: "smooth" });
+  const scrollToContact = () => {
+    contactRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -154,7 +167,7 @@ export default function RegainLandingPage() {
           <button
             onClick={() => {
               trackCtaClick("header-cta");
-              scrollToForm();
+              scrollToContact();
             }}
             data-cta="header-cta"
             className="hidden sm:inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-medium rounded-full transition-colors"
@@ -196,7 +209,7 @@ export default function RegainLandingPage() {
               label={hero.primaryCta}
               ctaId={`hero-${segment}-primary`}
               variant="primary"
-              onClick={scrollToForm}
+              onClick={scrollToContact}
             />
             <CTAButton
               label={hero.secondaryCta}
@@ -295,7 +308,7 @@ export default function RegainLandingPage() {
             <CTAButton
               label={hero.primaryCta}
               ctaId={`cost-${segment}-cta`}
-              onClick={scrollToForm}
+              onClick={scrollToContact}
             />
           </div>
         </div>
@@ -342,237 +355,364 @@ export default function RegainLandingPage() {
         </div>
       </section>
 
-      {/* ===== COMPARISON ===== */}
-      <section id="comparison" className="py-20 px-4 bg-light-bg">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <SectionLabel>REGAINとは</SectionLabel>
-            <h2 className="text-3xl sm:text-4xl font-black text-light-text">
-              一般的なAI研修と、
-              <span className="text-primary">何が違うのか</span>
+      {/* ===== MID CTA ===== */}
+      <section
+        id="mid-cta"
+        className="relative py-24 px-4 overflow-hidden bg-light-text"
+        style={{
+          backgroundImage: `url(${MID_CTA_CONTENT.bgImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div
+          className="absolute inset-0 bg-gradient-to-br from-primary/85 via-primary-dark/80 to-light-text/90"
+          aria-hidden="true"
+        />
+        <div className="relative max-w-3xl mx-auto">
+          <div className="bg-white rounded-3xl p-8 sm:p-12 shadow-2xl text-center">
+            <h2 className="text-2xl sm:text-3xl font-black text-light-text leading-tight mb-8">
+              {MID_CTA_CONTENT.title}
             </h2>
-          </div>
-
-          <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-light-text text-white">
-                  <th className="px-6 py-4 text-left text-sm font-medium w-1/4">
-                    比較項目
-                  </th>
-                  <th className="px-6 py-4 text-center text-sm font-medium w-3/8">
-                    一般的なAI研修
-                  </th>
-                  <th className="px-6 py-4 text-center text-sm font-medium w-3/8 bg-primary">
-                    REGAIN
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {COMPARISON_ROWS.map((row, i) => (
-                  <tr
-                    key={i}
-                    className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}
-                  >
-                    <td className="px-6 py-4 text-sm font-semibold text-light-text">
-                      {row.topic}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-500 text-center">
-                      {row.general}
-                    </td>
-                    <td className="px-6 py-4 text-sm font-medium text-light-text text-center bg-primary/5 border-l border-primary/20">
-                      <span className="flex items-center justify-center gap-2">
-                        <Check size={14} className="text-primary flex-shrink-0" />
-                        {row.regain}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <button
+                onClick={() => {
+                  trackCtaClick(`mid-cta-personal`);
+                  setSegment("personal");
+                  scrollToContact();
+                }}
+                data-cta="mid-cta-personal"
+                className={`inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full font-bold text-sm sm:text-base transition-all duration-200 active:scale-95 ${
+                  segment === "personal"
+                    ? "bg-primary hover:bg-primary-dark text-white shadow-lg"
+                    : "bg-white border-2 border-primary text-primary hover:bg-primary/5"
+                }`}
+              >
+                {MID_CTA_CONTENT.personalCta}
+                <ChevronRight size={16} />
+              </button>
+              <button
+                onClick={() => {
+                  trackCtaClick(`mid-cta-corporate`);
+                  setSegment("corporate");
+                  scrollToContact();
+                }}
+                data-cta="mid-cta-corporate"
+                className={`inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full font-bold text-sm sm:text-base transition-all duration-200 active:scale-95 ${
+                  segment === "corporate"
+                    ? "bg-primary hover:bg-primary-dark text-white shadow-lg"
+                    : "bg-white border-2 border-primary text-primary hover:bg-primary/5"
+                }`}
+              >
+                {MID_CTA_CONTENT.corporateCta}
+                <ChevronRight size={16} />
+              </button>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ===== CASES ===== */}
-      <section id="cases" className="py-20 px-4 bg-surface">
-        <div className="max-w-5xl mx-auto">
+      {/* ===== VOICES（想定される変化） ===== */}
+      <section id="voices" className="py-20 px-4 bg-light-bg">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <SectionLabel>支援事例</SectionLabel>
-            <h2 className="text-3xl sm:text-4xl font-black">
-              どんな変化が
-              <span className="text-primary">起きるか</span>
+            <SectionLabel>VOICES</SectionLabel>
+            <h2 className="text-3xl sm:text-4xl font-black text-light-text">
+              想定される
+              <span className="text-primary">変化</span>
             </h2>
-            <p className="text-text-sub text-sm mt-2">
-              ※以下は想定ケースです。実際の事例は差し替え予定。
+            <p className="text-light-text/60 text-sm mt-3">
+              ※公開可能な実績・お客様の声がある場合は、後から差し替え可能な構造です。
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {CASE_CARDS.map((c, i) => (
-              <div
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {VOICE_CARDS.map((v, i) => (
+              <article
                 key={i}
-                className="bg-white/5 border border-white/10 rounded-2xl p-6"
+                className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col"
               >
-                <div className="inline-block text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full mb-4">
-                  {c.type}
+                <div
+                  className="aspect-[4/3] bg-gradient-to-br from-primary/15 via-primary/5 to-light-bg relative"
+                  style={{
+                    backgroundImage: `url(${v.image})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                >
+                  <span className="absolute top-4 left-4 inline-block bg-primary text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                    {v.label}
+                  </span>
                 </div>
-                <div className="space-y-3">
-                  <div className="flex gap-3">
-                    <span className="text-xs font-bold text-text-sub w-14 flex-shrink-0 pt-0.5">
-                      Before
-                    </span>
-                    <p className="text-text-sub text-sm">{c.before}</p>
-                  </div>
-                  <div className="flex gap-3">
-                    <span className="text-xs font-bold text-accent w-14 flex-shrink-0 pt-0.5">
-                      気づき
-                    </span>
-                    <p className="text-text-main text-sm">{c.insight}</p>
-                  </div>
-                  <div className="flex gap-3">
-                    <span className="text-xs font-bold text-primary w-14 flex-shrink-0 pt-0.5">
-                      After
-                    </span>
-                    <p className="text-text-main text-sm font-medium">
-                      {c.after}
-                    </p>
-                  </div>
-                  <div className="mt-3 pt-3 border-t border-white/10 flex items-center gap-2">
-                    <ArrowRight size={14} className="text-primary" />
-                    <p className="text-primary text-sm font-semibold">
-                      {c.change}
-                    </p>
-                  </div>
+                <div className="p-6 flex-1 flex flex-col">
+                  <h3 className="text-base font-black text-light-text leading-snug mb-3">
+                    {v.title}
+                  </h3>
+                  <p className="text-light-text/70 text-sm leading-relaxed">
+                    {v.body}
+                  </p>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ===== OFFER ===== */}
-      <section id="offer" className="py-20 px-4 bg-base">
-        <div className="max-w-4xl mx-auto">
+      {/* ===== OFFER（WorX風 料金カード） ===== */}
+      <section id="offer" className="py-20 px-4 bg-surface">
+        <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
-            <SectionLabel>無料オファー</SectionLabel>
+            <SectionLabel>{OFFER_CARD.eyebrow}</SectionLabel>
             <h2 className="text-3xl sm:text-4xl font-black">
-              まずは、
-              <span className="text-primary">価値を受け取る</span>
-              ところから
+              {OFFER_CARD.title}
             </h2>
           </div>
 
-          <div className="bg-surface border border-primary/30 rounded-3xl p-8 sm:p-10 mb-8">
-            <h3 className="text-2xl font-black text-primary mb-6">
-              {OFFER_CONTENT[segment].title}
-            </h3>
-            <ul className="space-y-4 mb-8">
-              {OFFER_CONTENT[segment].bullets.map((b, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Check size={12} className="text-white" />
-                  </div>
-                  <span className="text-text-main">{b}</span>
-                </li>
-              ))}
-            </ul>
+          <div className="bg-white rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+            <div className="bg-light-text text-white px-6 py-4 text-center">
+              <span className="text-sm font-bold tracking-widest">
+                {offerTitle}
+              </span>
+            </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 text-sm text-text-sub">
-              <div className="flex items-center gap-2">
-                <Shield size={14} className="text-primary" />
-                強引な営業は一切ありません
+            <div className="px-6 sm:px-10 py-10 text-center">
+              <div className="text-sm font-semibold text-light-text/60 mb-2">
+                {OFFER_CARD.headline.replace(" 0円", "")}
               </div>
-              <div className="flex items-center gap-2">
-                <Target size={14} className="text-primary" />
-                オンライン実施可能
+              <div className="flex items-baseline justify-center gap-1 mb-2">
+                <span className="text-7xl sm:text-8xl font-black text-primary leading-none">
+                  0
+                </span>
+                <span className="text-3xl sm:text-4xl font-black text-primary">
+                  円
+                </span>
               </div>
-              <div className="flex items-center gap-2">
-                <Zap size={14} className="text-primary" />
-                翌営業日以内に返信
+              <div className="text-xs text-light-text/60 mb-8">
+                ※初回診断は完全無料です
+              </div>
+
+              <ul className="space-y-3 mb-8 text-left max-w-md mx-auto">
+                {OFFER_CARD.bullets.map((b, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check size={12} className="text-white" />
+                    </div>
+                    <span className="text-light-text text-sm">{b}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <button
+                onClick={() => {
+                  trackCtaClick(`offer-${segment}-cta`);
+                  scrollToContact();
+                }}
+                data-cta={`offer-${segment}-cta`}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-10 py-4 bg-primary hover:bg-primary-dark text-white font-bold rounded-full text-base transition-all duration-200 shadow-lg active:scale-95"
+              >
+                {OFFER_CARD.cta}
+                <ChevronRight size={16} />
+              </button>
+
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-light-text/60">
+                <div className="flex items-center gap-1.5">
+                  <Shield size={12} className="text-primary" />
+                  強引な営業なし
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Target size={12} className="text-primary" />
+                  オンライン可
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Zap size={12} className="text-primary" />
+                  翌営業日返信
+                </div>
               </div>
             </div>
           </div>
-
-          <div className="text-center">
-            <CTAButton
-              label={hero.primaryCta}
-              ctaId={`offer-${segment}-cta`}
-              onClick={scrollToForm}
-            />
-          </div>
         </div>
       </section>
 
-      {/* ===== FORM ===== */}
-      <section id="form" ref={formRef} className="py-20 px-4 bg-surface">
-        <div className="max-w-xl mx-auto">
-          <div className="text-center mb-10">
-            <SectionLabel>申し込みフォーム</SectionLabel>
-            <h2 className="text-3xl font-black">{OFFER_CONTENT[segment].title}</h2>
-            <p className="text-text-sub text-sm mt-2">
-              {/* TODO: 送信先フォームURLを差し替えてください（Google Forms / Calendly 等） */}
-              送信先フォームは準備中です。問い合わせ先を差し替えてご利用ください。
-            </p>
+      {/* ===== COMPARISON（3列） ===== */}
+      <section id="comparison" className="py-20 px-4 bg-light-bg">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <SectionLabel>OTHER SERVICES</SectionLabel>
+            <h2 className="text-3xl sm:text-4xl font-black text-light-text">
+              他サービスとの
+              <span className="text-primary">違い</span>
+            </h2>
           </div>
 
-          <form
-            className="space-y-5"
-            onSubmit={(e) => {
-              e.preventDefault();
-              trackCtaClick(`form-submit-${segment}`);
-              alert(
-                "送信先フォームを設定後、この処理を差し替えてください。"
-              );
-            }}
-          >
-            {offerFormFields.map((field, i) => (
-              <FormInput key={i} field={field} />
-            ))}
-
-            <button
-              type="submit"
-              data-cta={`form-submit-${segment}`}
-              className="w-full py-4 bg-primary hover:bg-primary-dark text-white font-bold rounded-full text-base transition-all duration-200 shadow-lg active:scale-95"
-            >
-              {hero.primaryCta}
-            </button>
-
-            <p className="text-xs text-text-sub text-center">
-              送信後、担当者よりご連絡します。強引な営業は行いません。
-            </p>
-          </form>
+          <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="min-w-[680px] rounded-2xl overflow-hidden border border-gray-200 bg-white shadow-sm">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-light-text text-white">
+                    <th className="px-4 sm:px-6 py-4 text-left text-sm font-medium w-[22%]">
+                      比較項目
+                    </th>
+                    <th className="px-4 sm:px-6 py-4 text-center text-sm font-medium">
+                      {COMPARISON_COLUMNS[0]}
+                    </th>
+                    <th className="px-4 sm:px-6 py-4 text-center text-sm font-medium">
+                      {COMPARISON_COLUMNS[1]}
+                    </th>
+                    <th className="px-4 sm:px-6 py-4 text-center text-sm font-bold bg-primary border-x-2 border-primary">
+                      {COMPARISON_COLUMNS[2]}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {COMPARISON_ROWS_3.map((row, i) => {
+                    const isLast = i === COMPARISON_ROWS_3.length - 1;
+                    return (
+                      <tr
+                        key={i}
+                        className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}
+                      >
+                        <td className="px-4 sm:px-6 py-4 text-sm font-semibold text-light-text">
+                          {row.topic}
+                        </td>
+                        <td className="px-4 sm:px-6 py-4 text-sm text-gray-500 text-center">
+                          <span className="inline-flex items-start gap-1.5">
+                            <X
+                              size={14}
+                              className="text-gray-400 flex-shrink-0 mt-0.5"
+                            />
+                            <span>{row.general}</span>
+                          </span>
+                        </td>
+                        <td className="px-4 sm:px-6 py-4 text-sm text-gray-500 text-center">
+                          <span className="inline-flex items-start gap-1.5">
+                            <X
+                              size={14}
+                              className="text-gray-400 flex-shrink-0 mt-0.5"
+                            />
+                            <span>{row.agency}</span>
+                          </span>
+                        </td>
+                        <td
+                          className={`px-4 sm:px-6 py-4 text-sm font-semibold text-light-text text-center bg-primary/5 border-x-2 border-primary ${
+                            isLast ? "border-b-2" : ""
+                          }`}
+                        >
+                          <span className="inline-flex items-start gap-1.5">
+                            <Check
+                              size={14}
+                              className="text-primary flex-shrink-0 mt-0.5"
+                            />
+                            <span>{row.regain}</span>
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <p className="text-light-text/60 text-xs text-center mt-3 sm:hidden">
+            ←→ 横にスクロールできます
+          </p>
         </div>
       </section>
 
-      {/* ===== FAQ ===== */}
-      <section id="faq" className="py-20 px-4 bg-base">
+      {/* ===== FAQ（赤背景＋白アコーディオン） ===== */}
+      <section id="faq" className="py-20 px-4 bg-primary">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
-            <SectionLabel>よくある質問</SectionLabel>
-            <h2 className="text-3xl sm:text-4xl font-black">FAQ</h2>
+            <SectionLabel tone="white">FAQ</SectionLabel>
+            <h2 className="text-3xl sm:text-4xl font-black text-white">
+              よくある質問
+            </h2>
           </div>
 
-          <FAQAccordion items={faqs} />
+          <FAQAccordion items={FAQS_CV} variant="light" />
         </div>
       </section>
 
       {/* ===== FINAL CTA ===== */}
-      <section id="final-cta" className="py-24 px-4 bg-surface">
-        <div className="max-w-3xl mx-auto text-center">
-          <SectionLabel>まずは一歩</SectionLabel>
-          <h2 className="text-3xl sm:text-4xl font-black mb-6">
-            {FINAL_CTA_COPY[segment]}
-          </h2>
-          <CTAButton
-            label={hero.primaryCta}
-            ctaId={`final-cta-${segment}`}
-            onClick={scrollToForm}
-            className="text-lg px-10 py-5"
-          />
-          <p className="text-text-sub text-sm mt-6">
-            無料・強引な営業なし・オンライン対応可
-          </p>
+      <section
+        id="final-cta"
+        className="relative py-24 px-4 overflow-hidden bg-light-text"
+        style={{
+          backgroundImage: `url(${FINAL_CTA_CONTENT.bgImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div
+          className="absolute inset-0 bg-gradient-to-br from-light-text/90 via-primary-dark/85 to-primary/85"
+          aria-hidden="true"
+        />
+        <div className="relative max-w-3xl mx-auto">
+          <div className="bg-white rounded-3xl p-8 sm:p-12 shadow-2xl text-center">
+            <h2 className="text-3xl sm:text-4xl font-black text-light-text leading-tight mb-4">
+              {FINAL_CTA_CONTENT.title}
+            </h2>
+            <p className="text-light-text/70 text-base mb-8 leading-relaxed">
+              {finalCtaText}
+            </p>
+            <CTAButton
+              label={hero.primaryCta}
+              ctaId={`final-cta-${segment}`}
+              onClick={scrollToContact}
+              className="text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5"
+            />
+            <p className="text-light-text/50 text-xs mt-6">
+              無料・強引な営業なし・オンライン対応可
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== CONTACT FORM（最終CVポイント） ===== */}
+      <section
+        id="contact"
+        ref={contactRef}
+        className="py-20 px-4 bg-light-bg"
+      >
+        <div className="max-w-xl mx-auto">
+          <div className="text-center mb-10">
+            <SectionLabel tone="light">CONTACT</SectionLabel>
+            <h2 className="text-3xl font-black text-light-text">
+              無料診断 申し込みフォーム
+            </h2>
+            <p className="text-light-text/60 text-sm mt-3">
+              現状の課題に合わせて、診断内容をご案内します。
+            </p>
+          </div>
+
+          <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-lg border border-gray-100">
+            <form
+              className="space-y-5"
+              onSubmit={(e) => {
+                e.preventDefault();
+                trackCtaClick(`contact-form-submit`);
+                alert(
+                  "送信先フォームを設定後、この処理を差し替えてください。"
+                );
+              }}
+            >
+              {CONTACT_FORM_FIELDS.map((field, i) => (
+                <FormInput key={i} field={field} />
+              ))}
+
+              <button
+                type="submit"
+                data-cta="contact-form-submit"
+                className="w-full inline-flex items-center justify-center gap-2 py-4 bg-primary hover:bg-primary-dark text-white font-bold rounded-full text-base transition-all duration-200 shadow-lg active:scale-95"
+              >
+                {CONTACT_FORM_SUBMIT}
+                <ChevronRight size={16} />
+              </button>
+
+              <p className="text-xs text-light-text/50 text-center pt-2">
+                送信後、担当者よりご連絡します。強引な営業は行いません。
+              </p>
+            </form>
+          </div>
         </div>
       </section>
 
